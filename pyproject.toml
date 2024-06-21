@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "asyncgui-ext-synctools"
+version = "0.1.0"
+description = "Inter-task sychronization and communication."
+authors = ["Nattōsai Mitō <flow4re2c@gmail.com>"]
+license = "MIT"
+readme = 'README.md'
+repository = 'https://github.com/asyncgui/asyncgui-ext-synctools'
+homepage = 'https://github.com/asyncgui/asyncgui-ext-synctools'
+keywords = ['async', ]
+classifiers=[
+    'Development Status :: 5 - Production/Stable',
+    'License :: OSI Approved :: MIT License',
+    'Intended Audience :: Developers',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Topic :: Software Development :: Libraries',
+    'Operating System :: OS Independent',
+]
+packages = [
+    { include = "asyncgui_ext", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+asyncgui = "^0.6"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+
+[tool.poetry.group.doc.dependencies]
+sphinx = "^7.2.6"
+sphinx-autobuild = "^2021.3.14"
+furo = "^2023.9.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+xfail_strict = true
+addopts = "--maxfail=4 --strict-markers"

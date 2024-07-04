@@ -1,64 +1,46 @@
-__all__ = (
-    'Event',
-)
+__all__ = ('Event', )
 import types
-import typing as T
 
 
 class Event:
     '''
-    Similar to :class:`asyncio.Event`.
-    The differences are:
-
-    * :meth:`set` accepts any number of arguments but doesn't use them at all so it can be used as a callback function
-      in any library.
-    * :attr:`is_set` is a property not a function.
+    Similar to :class:`asyncgui.AsyncEvent`, but this one can handle multiple tasks simultaneously.
 
     .. code-block::
 
+        async def async_fn(e):
+            args, kwargs = await e.wait()
+            assert args == (2, )
+            assert kwargs == {'crow': 'raven', }
+
+            args, kwargs = await e.wait()
+            assert args == (3, )
+            assert kwargs == {'toad': 'frog', }
+
         e = Event()
-        any_library.register_callback(e.set)
+        e.fire(1, crocodile='alligator')
+        start(async_fn(e))
+        e.fire(2, crow='raven')
+        e.fire(3, toad='frog')
     '''
 
-    __slots__ = ('_flag', '_waiting_tasks', )
+    __slots__ = ('_waiting_tasks', )
 
     def __init__(self):
-        self._flag = False
         self._waiting_tasks = []
 
-    @property
-    def is_set(self) -> bool:
-        return self._flag
-
-    def set(self, *args, **kwargs):
-        '''
-        Set the event.
-        Unlike asyncio's, all tasks waiting for this event to be set will be resumed *immediately*.
-        '''
-        if self._flag:
-            return
-        self._flag = True
+    def fire(self, *args, **kwargs):
         tasks = self._waiting_tasks
         self._waiting_tasks = []
         for t in tasks:
             if t is not None:
-                t._step()
-
-    def clear(self):
-        '''Unset the event.'''
-        self._flag = False
+                t._step(*args, **kwargs)
 
     @types.coroutine
-    def wait(self) -> T.Awaitable:
-        '''
-        Wait for the event to be set.
-        Return *immediately* if it's already set.
-        '''
-        if self._flag:
-            return
+    def wait(self):
+        tasks = self._waiting_tasks
+        idx = len(tasks)
         try:
-            tasks = self._waiting_tasks
-            idx = len(tasks)
-            yield tasks.append
+            return (yield tasks.append)
         finally:
             tasks[idx] = None

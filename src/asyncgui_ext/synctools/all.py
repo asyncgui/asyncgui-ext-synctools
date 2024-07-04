@@ -1,4 +1,6 @@
 __all__ = (
-    'Event',
+    'Event', 'Box',
 )
 from .event import Event
+from .box import Box
+

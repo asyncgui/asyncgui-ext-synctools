@@ -7,8 +7,8 @@ Inter-task sychronization and communication.
 Pin the minor version.
 
 ```
-poetry add asyncgui-ext-synctools@~0.1
-pip install "asyncgui-ext-synctools>=0.1,<0.2"
+poetry add asyncgui-ext-synctools@~0.2
+pip install "asyncgui-ext-synctools>=0.2,<0.3"
 ```
 
 ## Tested on

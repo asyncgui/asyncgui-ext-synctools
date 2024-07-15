@@ -1,34 +1,34 @@
+'''
+.. code-block::
+
+    import asyncgui as ag
+    from asyncgui_ext.synctools.box import Box
+
+    async def async_fn1(box):
+        for __ in range(10):
+            args, kwargs = await box.get()
+            assert args == (1, )
+            assert kwargs == {'crow': 'raven', }
+
+    async def async_fn2(box):
+        for __ in range(10):
+            args, kwargs = await box.get()
+            assert args == (2, )
+            assert kwargs == {'frog': 'toad', }
+
+    box = Box()
+    box.put(1, crow='raven')
+    ag.start(async_fn1(box))
+    box.update(2, frog='toad')
+    ag.start(async_fn2(box))
+'''
+
+
 __all__ = ('Box', )
 import types
 
 
 class Box:
-    '''
-    Similar to :class:`asyncgui.AsyncBox`, but this one can handle multiple tasks simultaneously.
-    This is the closest thing to :class:`asyncio.Event` in this library.
-
-    .. code-block::
-
-        async def async_fn(b1, b2):
-            args, kwargs = await b1.get()
-            assert args == (1, )
-            assert kwargs == {'crow': 'raven', }
-
-            args, kwargs = await b2.get()
-            assert args == (2, )
-            assert kwargs == {'frog': 'toad', }
-
-            args, kwargs = await b1.get()
-            assert args == (1, )
-            assert kwargs == {'crow': 'raven', }
-
-        b1 = Box()
-        b2 = Box()
-        b1.put(1, crow='raven')
-        start(async_fn(b1, b2))
-        b2.put(2, frog='toad')
-    '''
-
     __slots__ = ('_item', '_waiting_tasks', )
 
     def __init__(self):

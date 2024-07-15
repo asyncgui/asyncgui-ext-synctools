@@ -1,29 +1,35 @@
+'''
+.. code-block::
+
+    import asyncgui as ag
+    from asyncgui_ext.synctools.event import Event
+
+    async def async_fn1(e):
+        args, kwargs = await e.wait()
+        assert args == (1, )
+        assert kwargs == {'crow': 'raven', }
+
+        args, kwargs = await e.wait()
+        assert args == (2, )
+        assert kwargs == {'toad': 'frog', }
+
+    async def async_fn2(e):
+        args, kwargs = await e.wait()
+        assert args == (2, )
+        assert kwargs == {'toad': 'frog', }
+
+    e = Event()
+    ag.start(async_fn1(e))
+    e.fire(1, crow='raven')
+    ag.start(async_fn2(e))
+    e.fire(2, toad='frog')
+'''
+
 __all__ = ('Event', )
 import types
 
 
 class Event:
-    '''
-    Similar to :class:`asyncgui.AsyncEvent`, but this one can handle multiple tasks simultaneously.
-
-    .. code-block::
-
-        async def async_fn(e):
-            args, kwargs = await e.wait()
-            assert args == (2, )
-            assert kwargs == {'crow': 'raven', }
-
-            args, kwargs = await e.wait()
-            assert args == (3, )
-            assert kwargs == {'toad': 'frog', }
-
-        e = Event()
-        e.fire(1, crocodile='alligator')
-        start(async_fn(e))
-        e.fire(2, crow='raven')
-        e.fire(3, toad='frog')
-    '''
-
     __slots__ = ('_waiting_tasks', )
 
     def __init__(self):

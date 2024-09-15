@@ -74,7 +74,7 @@ import heapq
 from functools import partial
 from collections import deque
 
-from asyncgui import AsyncEvent
+from asyncgui import ExclusiveEvent
 
 
 class QueueState(enum.Enum):
@@ -138,8 +138,8 @@ class Queue:
             raise ValueError(f"'capacity' must be either a positive integer or None. (was {capacity!r})")
         self._init_container(capacity, order)
         self._state = QueueState.OPENED
-        self._putters = deque[tuple[AsyncEvent, Item]]()
-        self._getters = deque[AsyncEvent]()
+        self._putters = deque[tuple[ExclusiveEvent, Item]]()
+        self._getters = deque[ExclusiveEvent]()
         self._capacity = capacity
         self._order = order
         self._is_transferring = False
@@ -200,7 +200,7 @@ class Queue:
             raise Closed
 
         if self._is_transferring or self.is_empty:
-            event = AsyncEvent()
+            event = ExclusiveEvent()
             self._getters.append(event)
             exc, item = (await event.wait())[0]
             if exc is not None:
@@ -240,7 +240,7 @@ class Queue:
             raise Closed
 
         if self._is_transferring or self.is_full:
-            event = AsyncEvent()
+            event = ExclusiveEvent()
             self._putters.append((event, item, ))
             exc = (await event.wait())[0][0]
             if exc is not None:

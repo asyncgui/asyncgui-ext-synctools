@@ -5,5 +5,3 @@ bin/
 /.venv/
 /.pytest_cache/
 /dist
-/docs/
-/src/asyncgui.py

@@ -1,44 +1,48 @@
-[tool.poetry]
+[project]
 name = "asyncgui-ext-queue"
 version = "0.3.1"
-description = "An asyncio.Queue equivalence for asyncgui"
-authors = ["Nattōsai Mitō <flow4re2c@gmail.com>"]
+description = "An asyncio.Queue equivalent for asyncgui"
+authors = [{ name = "Nattōsai Mitō", email = "flow4re2c@gmail.com" }]
+requires-python = ">=3.10,<4"
+readme = "README.md"
 license = "MIT"
-readme = 'README.md'
-repository = 'https://github.com/asyncgui/asyncgui-ext-queue'
-homepage = 'https://github.com/asyncgui/asyncgui-ext-queue'
-keywords = ['async', ]
-classifiers=[
-    'Development Status :: 5 - Production/Stable',
-    'License :: OSI Approved :: MIT License',
-    'Intended Audience :: Developers',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3.10',
-    'Programming Language :: Python :: 3.11',
-    'Programming Language :: Python :: 3.12',
-    'Programming Language :: Python :: 3.13',
-    'Topic :: Software Development :: Libraries',
-    'Operating System :: OS Independent',
+keywords = ["async"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+    "Operating System :: OS Independent",
 ]
-packages = [
-    { include = "asyncgui_ext", from = "src" },
+dependencies = ["asyncgui>=0.9.3,<1.0.0"]
+
+[project.urls]
+Documentation = "https://asyncgui.github.io/asyncgui-ext-queue"
+Repository = "https://github.com/asyncgui/asyncgui-ext-queue"
+
+[dependency-groups]
+dev = ["pytest>=8.0,<9"]
+doc = [
+    "sphinx>=7.2.6,<8",
+    "furo>=2023.9.10,<2024",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-asyncgui = ">=0.9.3,<1.0.0"
+[tool.uv]
+default-groups = ["dev", ]
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.0"
-
-[tool.poetry.group.doc.dependencies]
-sphinx = "^7.2.6"
-sphinx-autobuild = "^2021.3.14"
-furo = "^2023.9.10"
+[tool.uv.build-backend]
+module-name = "asyncgui_ext"
+namespace = true
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.9.2,<0.10.0"]
+build-backend = "uv_build"
 
 [tool.pytest.ini_options]
 xfail_strict = true

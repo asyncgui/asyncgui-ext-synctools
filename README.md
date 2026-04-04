@@ -44,3 +44,4 @@ pip install "asyncgui-ext-queue>=0.3,<0.4"
 - CPython 3.11
 - CPython 3.12
 - CPython 3.13
+- CPython 3.14

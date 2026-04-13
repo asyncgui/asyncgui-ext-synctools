@@ -28,7 +28,7 @@ Documentation = "https://asyncgui.github.io/asyncgui-ext-queue"
 Repository = "https://github.com/asyncgui/asyncgui-ext-queue"
 
 [dependency-groups]
-dev = ["pytest>=8.0,<9"]
+dev = ["pytest>=8.0,<10"]
 doc = [
     "sphinx>=7.2.6,<8",
     "furo>=2023.9.10,<2024",
